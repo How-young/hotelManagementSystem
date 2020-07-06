@@ -1127,17 +1127,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "true": true    |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "true":true
+    }
+}
+```
 
 **备注**
 
@@ -1161,18 +1158,15 @@
 
 **返回示例**
 
-
-
-| 1.  {                                  |
-| -------------------------------------- |
-| 2.   "error_code": 0,                  |
-| 3.   "data": {                         |
-| 4.    "success": true，                |
-| 5.    "logInformation"；{data，detail} |
-| 6.   }                                 |
-| 7.  }                                  |
-
-
+```json
+{
+    "srror_code":0,
+    "data":{
+        "success":true,
+        "logInformation":{data,detail}
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1207,17 +1201,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0, 
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1258,17 +1249,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "srror_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1309,17 +1297,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1360,17 +1345,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "erroe_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1411,17 +1393,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "erroe_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1463,17 +1442,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1514,17 +1490,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1558,17 +1531,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1602,17 +1572,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 **返回参数说明**
 
@@ -1654,19 +1621,14 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.   }                |
-| 6.  }                 |
-
-
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true
+    }
+}
+```
 
 | **参数名** | **类型** | **说明**                       |
 | ---------- | -------- | ------------------------------ |
@@ -1704,20 +1666,17 @@
 
 **返回示例**
 
-
-
-| 1.  {                                                        |
-| ------------------------------------------------------------ |
-| 2.   "error_code": 0,                                        |
-| 3.   "data": {                                               |
-| 4.    "success": true                                        |
-| 5.    "credential":{idcard,tenantname,tenantsex,scheduletime,checkintime} |
-| 6.   }                                                       |
-| 7.  }                                                        |
-
-
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true,
+        "credential":{
+            idcard,tenantname,tenantsex,scheduletime,checkintime
+        }
+    }
+}
+```
 
 | **参数名** | **类型** | **说明**                       |
 | ---------- | -------- | ------------------------------ |
@@ -1748,20 +1707,17 @@
 
 **返回示例**
 
-
-
-| 1.  {                                                        |
-| ------------------------------------------------------------ |
-| 2.   "error_code": 0,                                        |
-| 3.   "data": {                                               |
-| 4.    "success": true                                        |
-| 5.    "registeredroominfo":{idcard,tenantname,tenantsex,scheduletime,checkintime} |
-| 6.   }                                                       |
-| 7.  }                                                        |
-
-
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true,
+        "registerroominfo":{
+            idcard,tenantname,tenantsex,scheduletime,checkintime
+        }
+    }
+}
+```
 
 | **参数名**         | **类型** | **说明**                       |
 | ------------------ | -------- | ------------------------------ |
@@ -1799,20 +1755,17 @@
 
 **返回示例**
 
-
-
-| 1.  {                                                        |
-| ------------------------------------------------------------ |
-| 2.   "error_code": 0,                                        |
-| 3.   "data": {                                               |
-| 4.    "success": true                                        |
-| 5.    "newroominfo":{idcard，tenantname，tenantsex，roomnum，checkintime} |
-| 6.   }                                                       |
-| 7.  }                                                        |
-
-
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true,
+        "newroominfo":{
+            idcard，tenantname，tenantsex，roomnum，checkintime
+        }
+    }
+}
+```
 
 | **参数名**  | **类型** | **说明**                      |
 | ----------- | -------- | ----------------------------- |
@@ -1850,20 +1803,17 @@
 
 **返回示例**
 
-
-
-| 1.  {                                                        |
-| ------------------------------------------------------------ |
-| 2.   "error_code": 0,                                        |
-| 3.   "data": {                                               |
-| 4.    "success": true                                        |
-| 5.    "credential":{idcard,tenantname,tenantsex,roomnum,checkintime} |
-| 6.   }                                                       |
-| 7.  }                                                        |
-
-
-
-
+```json
+{
+    "error_code":0,
+    "data":{
+        "success":true,
+        "credential":{
+            idcard,tenantname,tenantsex,roomnum,checkintime
+        }
+    }
+}
+```
 
 | **参数名** | **类型** | **说明**                       |
 | ---------- | -------- | ------------------------------ |
@@ -1900,20 +1850,15 @@
 
 **返回示例**
 
-
-
-| 1.  {                 |
-| --------------------- |
-| 2.   "error_code": 0, |
-| 3.   "data": {        |
-| 4.    "success": true |
-| 5.    "price":{money} |
-| 6.   }                |
-| 7.  }                 |
-
-
-
-
+```json
+{
+    "error_code": 0,
+    "data":{
+        "success":true
+        "price":{money}
+    }
+}
+```
 
 | **参数名** | **类型** | **说明**                       |
 | ---------- | -------- | ------------------------------ |
@@ -1944,20 +1889,15 @@
 
 **返回示例**
 
-
-
-| 1.  {                           |
-| ------------------------------- |
-| 2.   "error_code": 0,           |
-| 3.   "data": {                  |
-| 4.    "success": true           |
-| 5.    "billinfo": {money，time} |
-| 6.   }                          |
-| 7.  }                           |
-
-
-
-
+```bash
+{
+	"error_code":0,
+	"data":{
+		"success":true,
+		"billinfo":{money, time}
+	}
+}
+```
 
 | **参数名** | **类型** | **说明**                       |
 | ---------- | -------- | ------------------------------ |
