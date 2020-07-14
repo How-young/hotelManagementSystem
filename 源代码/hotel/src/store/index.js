@@ -52,7 +52,7 @@ const store = new Vuex.Store({
                     //     isExternal: true, // 外链 跳到一个外部的 URL 页面
                     // },
                     {
-                        type: '',
+                        type: 'ios-cafe',
                         name: 'merchandise',
                         text: '商品',
                     },
@@ -62,8 +62,8 @@ const store = new Vuex.Store({
                         text: '商品类别',
                     },
                     {
-                        type: '',
-                        name: '',
+                        type: 'logo-buffer',
+                        name: 'floors',
                         text: '楼层',
                     },
                     {
@@ -102,11 +102,11 @@ const store = new Vuex.Store({
             },
             {
                 text: '房客管理',
-                type: '',
+                type: 'ios-body',
                 children: [
                     {
-                        type: '',
-                        name: '',
+                        type: 'ios-book',
+                        name: 'reserve',
                         text: '预定管理',
                     },
                     {

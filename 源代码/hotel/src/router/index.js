@@ -69,11 +69,23 @@ export const asyncRoutes = {
         meta: { title: '会员信息' },
         component: () => import('../views/base/members.vue'),
     },
-    t1: {
+    floors: {
+        path: 'floors',
+        name: 'floors',
+        meta: { title: '楼层管理' },
+        component: () => import('../views/base/floors.vue'),
+    },
+    merchandise: {
         path: 'merchandise',
         name: 'merchandise',
         meta: { title: '商品信息' },
         component: () => import('../views/base/merchandise.vue'),
+    },
+    reserve: {
+        path: 'reserve',
+        name: 'reserve',
+        meta: { title: '预定管理' },
+        component: () => import('../views/roomer/reserve.vue'),
     },
     password: {
         path: 'password',
