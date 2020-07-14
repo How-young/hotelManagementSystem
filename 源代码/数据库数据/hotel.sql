@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 14/07/2020 21:43:15
+ Date: 14/07/2020 22:44:28
 */
 
 SET NAMES utf8mb4;
@@ -139,6 +139,7 @@ CREATE TABLE `loginformation`  (
 -- ----------------------------
 INSERT INTO `loginformation` VALUES ('2020-03-01 00:00:00', '小明入住');
 INSERT INTO `loginformation` VALUES ('2020-03-03 00:00:00', '小明退房');
+INSERT INTO `loginformation` VALUES ('2020-07-14 00:00:00', 'vip用户信息修改');
 
 -- ----------------------------
 -- Table structure for payinformation
@@ -216,10 +217,10 @@ INSERT INTO `tenantinformation` VALUES ('10004', '101', '张三', '男', '2020-0
 INSERT INTO `tenantinformation` VALUES ('20004', '201', '小丽', '女', '2020-04-23 00:00:00', '2020-04-24 00:00:00');
 
 -- ----------------------------
--- Table structure for vipinformaition
+-- Table structure for vipinformation
 -- ----------------------------
-DROP TABLE IF EXISTS `vipinformaition`;
-CREATE TABLE `vipinformaition`  (
+DROP TABLE IF EXISTS `vipinformation`;
+CREATE TABLE `vipinformation`  (
   `vipnum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `idcard` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `vipname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -231,9 +232,9 @@ CREATE TABLE `vipinformaition`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of vipinformaition
+-- Records of vipinformation
 -- ----------------------------
-INSERT INTO `vipinformaition` VALUES ('1', '10004', '张三', '男', 'zhangsan@hotel.com', '2020-02-03', '123456789');
-INSERT INTO `vipinformaition` VALUES ('2', '20004', '小丽', '女', 'xiaoli@hotel.com', '2020-04-05', '987654321');
+INSERT INTO `vipinformation` VALUES ('1', '10004', '张三', '女', 'zhang@gmal.com', '2020-07-14', '520888');
+INSERT INTO `vipinformation` VALUES ('2', '20004', '小丽', '女', 'xiaoli@hotel.com', '2020-04-05', '987654321');
 
 SET FOREIGN_KEY_CHECKS = 1;

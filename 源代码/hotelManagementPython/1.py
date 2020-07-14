@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 #数据库操作
 def ConnectMysql(sql):
-    connect = pymysql.connect("localhost", "root", "1234", "hotel")
+    connect = pymysql.connect("localhost", "root", "fw2825", "hotel")
     cur = connect.cursor()
     try:
         cur.execute(sql)
@@ -490,7 +490,7 @@ def ModifyVip():
         sql = """update vipinformation
                          set idcard='%s',vipname='%s',vipsex='%s',vipemail='%s',registertime='%s',vipphone='%s'
                          where vipnum='%s'
-              """ % (idcard, vipname, vipsex, vipnum, vipemail, registertime, vipphone)
+              """ % (idcard, vipname, vipsex, vipemail, registertime, vipphone, vipnum)
         ConnectMysql(sql)
 
         td = strftime("%Y-%m-%d", localtime())
