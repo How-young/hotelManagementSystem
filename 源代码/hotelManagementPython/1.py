@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 #数据库操作
 def ConnectMysql(sql):
-    connect = pymysql.connect("localhost", "root", "1234", "hotel")
+    connect = pymysql.connect("localhost", "root", "root", "hotel")
     cur = connect.cursor()
     try:
         cur.execute(sql)
@@ -358,12 +358,12 @@ def AddVip():
     vipname = request.args.get("vipname")
     vipsex = request.args.get("vipsex")
     vipemail = request.args.get("vipemail")
-    registertime = request.args.get("registertime")
+    registertime = strftime("%Y-%m-%d", localtime())
     vipphone = request.args.get("vipphone")
 
     if vipnum:
         sql = """insert into
-                 vipinformation(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
+                 vipinformaition(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
                  values('%s', '%s', '%s', '%s', '%s', '%s', '%s')
               """%(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
         ConnectMysql(sql)
@@ -387,15 +387,21 @@ def ModifyVip():
     vipname = request.args.get("vipname")
     vipsex = request.args.get("vipsex")
     vipemail = request.args.get("vipemail")
-    registertime = request.args.get("registertime")
+    registertime = strftime("%Y-%m-%d", localtime())
     vipphone = request.args.get("vipphone")
 
     if vipnum:
-        sql = """update vipinformation
+        sql = """update vipinformaition
                          set idcard='%s',vipname='%s',vipsex='%s',vipemail='%s',registertime='%s',vipphone='%s'
                          where vipnum='%s'
-              """ % (idcard, vipname, vipsex, vipnum, vipemail, registertime, vipphone)
+              """ % (idcard, vipname, vipsex, vipemail, registertime, vipphone, vipnum)
         ConnectMysql(sql)
+
+        td = strftime("%Y-%m-%d", localtime())
+        sss = "vip用户信息修改"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
+        ConnectMysql(sqlr)
+
         return jsonify({
             "vipnum": vipnum,
             "idcard": idcard,
@@ -409,12 +415,13 @@ def ModifyVip():
     else:
         return Error()
 
+
 @app.route("/Vip/Delete")
 def DelteVip():
     vipnum = request.args.get("vipnum")
 
     if vipnum:
-        sql = "delete from vipinformation where vipnum='%s'" % vipnum
+        sql = "delete from vipinformaition where vipnum='%s'" % vipnum
         ConnectMysql(sql)
         return jsonify({
             "vipnum": vipnum,
@@ -425,8 +432,9 @@ def DelteVip():
 
 @app.route("/Vip/Get")
 def GetVip():
-    sql = "select * from vipinformation"
+    sql = "select * from vipinformaition"
     res = ConnectMysql(sql)
+    # print(res)
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "vipnum": type[0], "idcard": type[1],
@@ -442,9 +450,9 @@ def GetVip():
 @app.route("/Vip/NumGet")
 def NumGetVip():
     vipnum = request.args.get("vipnum")
-    
+
     if vipnum:
-        sql ="select * from vipinformation where vipnum='%s'" % vipnum
+        sql ="select * from vipinformaition where vipnum='%s'" % vipnum
         res = ConnectMysql(sql)
         list = []
         for num, type in enumerate(res):
