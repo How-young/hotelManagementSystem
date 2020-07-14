@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 14/07/2020 12:11:14
+ Date: 14/07/2020 21:43:15
 */
 
 SET NAMES utf8mb4;
@@ -38,15 +38,17 @@ INSERT INTO `administratorinfromation` VALUES ('admin', '123');
 DROP TABLE IF EXISTS `billinformation`;
 CREATE TABLE `billinformation`  (
   `goodsnum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `idcard` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `idcard` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `quantity` int(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`goodsnum`) USING BTREE
+  `summoney` double(255, 0) NULL DEFAULT NULL,
+  PRIMARY KEY (`goodsnum`, `idcard`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of billinformation
 -- ----------------------------
-INSERT INTO `billinformation` VALUES ('101', '12345', 2);
+INSERT INTO `billinformation` VALUES ('101', '12345', 2, 3);
+INSERT INTO `billinformation` VALUES ('102', '12345', 3, 2);
 
 -- ----------------------------
 -- Table structure for employeeinfromation
@@ -145,8 +147,14 @@ DROP TABLE IF EXISTS `payinformation`;
 CREATE TABLE `payinformation`  (
   `idcard` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `paytime` timestamp(0) NULL DEFAULT NULL,
-  `total` double(50, 0) NULL DEFAULT NULL
+  `total` double(50, 0) NULL DEFAULT NULL,
+  PRIMARY KEY (`idcard`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of payinformation
+-- ----------------------------
+INSERT INTO `payinformation` VALUES ('12345', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for roominformation
@@ -188,10 +196,10 @@ INSERT INTO `roomtypeinformation` VALUES ('1', '双人', '400', '20', '空间大
 INSERT INTO `roomtypeinformation` VALUES ('2', '单人', '250', '20', '干净整洁');
 
 -- ----------------------------
--- Table structure for tenantinfromation
+-- Table structure for tenantinformation
 -- ----------------------------
-DROP TABLE IF EXISTS `tenantinfromation`;
-CREATE TABLE `tenantinfromation`  (
+DROP TABLE IF EXISTS `tenantinformation`;
+CREATE TABLE `tenantinformation`  (
   `idcard` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `stayroom` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `tenantname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -202,10 +210,10 @@ CREATE TABLE `tenantinfromation`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of tenantinfromation
+-- Records of tenantinformation
 -- ----------------------------
-INSERT INTO `tenantinfromation` VALUES ('10004', '101', '张三', '男', '2020-04-01 00:00:00', '2020-04-03 00:00:00');
-INSERT INTO `tenantinfromation` VALUES ('20004', '201', '小丽', '女', '2020-04-23 00:00:00', '2020-04-24 00:00:00');
+INSERT INTO `tenantinformation` VALUES ('10004', '101', '张三', '男', '2020-04-01 00:00:00', '2020-04-03 00:00:00');
+INSERT INTO `tenantinformation` VALUES ('20004', '201', '小丽', '女', '2020-04-23 00:00:00', '2020-04-24 00:00:00');
 
 -- ----------------------------
 -- Table structure for vipinformaition
