@@ -357,18 +357,24 @@ def AddVip():
     idcard = request.args.get("idcard")
     vipname = request.args.get("vipname")
     vipsex = request.args.get("vipsex")
+    vipemail = request.args.get("vipemail")
+    registertime = request.args.get("registertime")
+    vipphone = request.args.get("vipphone")
 
     if vipnum:
         sql = """insert into
-                 vipinformation(vipnum, idcard, vipname, vipsex)
-                 values('%s', '%s', '%s', '%s')
-              """%(vipnum, idcard, vipname, vipsex)
+                 vipinformation(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
+                 values('%s', '%s', '%s', '%s', '%s', '%s', '%s')
+              """%(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
         ConnectMysql(sql)
         return jsonify({
             "vipnum": vipnum,
             "idcard": idcard,
             "vipname": vipname,
             "vipsex": vipsex,
+            "vipemail": vipemail,
+            "registertime": registertime,
+            "vipphone": vipphone,
             "status": True
         })
     else:
@@ -380,18 +386,24 @@ def ModifyVip():
     idcard = request.args.get("idcard")
     vipname = request.args.get("vipname")
     vipsex = request.args.get("vipsex")
+    vipemail = request.args.get("vipemail")
+    registertime = request.args.get("registertime")
+    vipphone = request.args.get("vipphone")
 
     if vipnum:
         sql = """update vipinformation
-                         set idcard='%s',vipname='%s',vipsex='%s'
+                         set idcard='%s',vipname='%s',vipsex='%s',vipemail='%s',registertime='%s',vipphone='%s'
                          where vipnum='%s'
-              """ % (idcard, vipname, vipsex, vipnum)
+              """ % (idcard, vipname, vipsex, vipnum, vipemail, registertime, vipphone)
         ConnectMysql(sql)
         return jsonify({
             "vipnum": vipnum,
             "idcard": idcard,
             "vipname": vipname,
             "vipsex": vipsex,
+            "vipemail": vipemail,
+            "registertime": registertime,
+            "vipphone": vipphone,
             "status": True
         })
     else:
@@ -418,12 +430,34 @@ def GetVip():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "vipnum": type[0], "idcard": type[1],
-                     "vipname": type[2], "vipsex": type[3]})
+                     "vipname": type[2], "vipsex": type[3], "vipemail": type[4],
+                     "registertime": type[5], "vipphone": type[6]})
         list.append(item)
     return jsonify({
         "Vip": list,
         "status": True
     })
+
+#根据会员号查找会员信息
+@app.route("/Vip/NumGet")
+def NumGetVip():
+    vipnum = request.args.get("vipnum")
+    
+    if vipnum:
+        sql ="select * from vipinformation where vipnum='%s'" % vipnum
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "vipnum": type[0], "idcard": type[1],
+                     "vipname": type[2], "vipsex": type[3], "vipemail": type[4],
+                     "registertime": type[5], "vipphone": type[6]})
+            list.append(item)
+        return jsonify({
+        "Vip": list,
+        "status": True
+    })
+    else:
+        return Error()
 
 #员工信息相关操作
 @app.route("/Employee/Add")
@@ -503,6 +537,32 @@ def GetEmployee():
         "Employee": list,
         "status": True
     })
+
+#根据员工编号或姓名查找员工信息
+@app.route("/Employee/NumGet")
+def NumGetEmployee():
+    employeenumOrname = request.args.get("employeenumOrname")
+    
+    if employeenumOrname:
+        sql1 ="select * from employeeinfromation where employeenum='%s'" % employeenumOrname
+        sql2 ="select * from employeeinfromation where employeename='%s'" % employeenumOrname
+        res1 = ConnectMysql(sql1)
+        res2 = ConnectMysql(sql2)
+        if res1:
+            res = res1
+        else:
+            res = res2
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "employeenum": type[0], "employeemail": type[1],
+                     "employeepassword": type[2], "employeename": type[3], "employeesex": type[4]})
+            list.append(item)
+        return jsonify({
+        "Employee": list,
+        "status": True
+    })
+    else:
+        return Error()
 
 
 #客房信息相关操作
