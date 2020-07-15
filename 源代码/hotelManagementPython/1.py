@@ -459,7 +459,7 @@ def KeyGetGoods():
         ConnectMysql(sqlr)
 
         return jsonify({
-            "GoodsType": list,
+            "Goods": list,
             "status": True
         })
     else:
@@ -1049,7 +1049,8 @@ def KeyGetRoom():
 def AddBill():
     goodsnum = request.args.get("goodsnum")
     idcard = request.args.get("idcard")
-    quantity = request.args.get("quantity")
+    quantitystr = request.args.get("quantity")
+    quantity = float(quantitystr)
 
     if goodsnum and idcard:
         sql1 = "select goodsquantity,goodsprice from goodsinformation where goodsnum='%s'" % goodsnum
@@ -1063,13 +1064,14 @@ def AddBill():
             sql6 = "insert into payinformation(idcard) value ('%s')"%idcard
             ConnectMysql(sql6)
 
-        summoney = res[1] * quantity
+        summoney = res[0][1] * float(quantity)
         today = strftime("%Y-%m-%d %H:%M:%S", localtime())
+
         sql2 = """insert into
                  billinformation(goodsnum, idcard, quantity,summoney)
                  values('%s', '%s', '%s', '%s')
               """%(goodsnum, idcard, quantity, summoney)
-        sql3 = "update goodsinformation set goodsquantity='%s' where goodsnum='%s'"%(res[0]-quantity,goodsnum)
+        sql3 = "update goodsinformation set goodsquantity='%s' where goodsnum='%s'"%(res[0][0]-quantity,goodsnum)
         ConnectMysql(sql2)
         ConnectMysql(sql3)
 
@@ -1077,7 +1079,9 @@ def AddBill():
         res7 = ConnectMysql(sql7)
         sql8 = "select total from payinformation where idcard='%s'"%idcard
         res8=ConnectMysql(sql8)
-        sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'"%(today, res8[0]+res7[0], idcard)
+        print(res7[0][0])
+        print(res8[0][0])
+        sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'"%(today, (res8[0][0] if res8[0][0] is not None else 0) +res7[0][0], idcard)
         ConnectMysql(sql4)
 
         td = strftime("%Y-%m-%d %H:%M:%S", localtime())
@@ -1102,6 +1106,7 @@ def ModifyBill():
     quantity = request.args.get("quantity")
 
     if goodsnum and idcard:
+
         sql1 = "select goodsquantity,goodsprice from goodsinformation where goodsnum='%s'" % goodsnum
         res = ConnectMysql(sql1)
         if res.__len__() == 0:
@@ -1113,23 +1118,29 @@ def ModifyBill():
             sql6 = "insert into payinformation(idcard) value ('%s')" % idcard
             ConnectMysql(sql6)
 
-        summoney = res[1] * quantity
+        summoney = res[0][1] * float(quantity)
         today = strftime("%Y-%m-%d %H:%M:%S", localtime())
+
         sql2 = """update billinformation
-                         set summoney='%s',quantity='%s'
-                         where goodsnum='%s',idcard='%s'
-              """ % (summoney,quantity, goodsnum, idcard)
-        sql3 = "update goodsinformation set goodsquantity='%s' where goodsnum='%s'" % (res[0] - quantity, goodsnum)
+                    set summoney='%s',quantity='%s'
+                    where goodsnum='%s',idcard='%s'
+                """ % (summoney, quantity, goodsnum, idcard)
+        sql3 = "update goodsinformation set goodsquantity='%s' where goodsnum='%s'" % (res[0][0] - quantity, goodsnum)
         ConnectMysql(sql2)
         ConnectMysql(sql3)
 
         sql7 = "select sum(summoney) from billinformation where idcard='%s'" % idcard
         res7 = ConnectMysql(sql7)
-        sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'" % (today, res7[0], idcard)
+        sql8 = "select total from payinformation where idcard='%s'" % idcard
+        res8 = ConnectMysql(sql8)
+        print(res7[0][0])
+        print(res8[0][0])
+        sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'" % (
+        today, (res8[0][0] if res8[0][0] is not None else 0) + res7[0][0], idcard)
         ConnectMysql(sql4)
 
         td = strftime("%Y-%m-%d %H:%M:%S", localtime())
-        sss = "账单信息修改"
+        sss = "账单信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
         ConnectMysql(sqlr)
 
@@ -1319,7 +1330,7 @@ def GetBookTenant():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
-                     "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
+                     "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
         list.append(item)
 
     td = strftime("%Y-%m-%d %H:%M:%S", localtime())
@@ -1465,7 +1476,7 @@ def GetAllTenant():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
-                     "checkin": type[3], "checkout": type[4]})
+                     "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
         list.append(item)
 
     td = strftime("%Y-%m-%d %H:%M:%S", localtime())
