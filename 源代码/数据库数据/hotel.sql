@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 14/07/2020 22:44:28
+ Date: 15/07/2020 16:16:34
 */
 
 SET NAMES utf8mb4;
@@ -76,15 +76,14 @@ DROP TABLE IF EXISTS `floorinformation`;
 CREATE TABLE `floorinformation`  (
   `floornum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `floordescribe` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `remainroom` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`floornum`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of floorinformation
 -- ----------------------------
-INSERT INTO `floorinformation` VALUES ('1', '便宜', 20);
-INSERT INTO `floorinformation` VALUES ('2', '安静', 19);
+INSERT INTO `floorinformation` VALUES ('01', '便宜');
+INSERT INTO `floorinformation` VALUES ('02', '安静');
 
 -- ----------------------------
 -- Table structure for goodsinformation
@@ -105,6 +104,7 @@ CREATE TABLE `goodsinformation`  (
 -- Records of goodsinformation
 -- ----------------------------
 INSERT INTO `goodsinformation` VALUES ('101', '可乐', '1', 3, 10);
+INSERT INTO `goodsinformation` VALUES ('102', '橙汁', '1', 5, 10);
 INSERT INTO `goodsinformation` VALUES ('201', '吐司', '2', 7, 5);
 
 -- ----------------------------
@@ -140,6 +140,8 @@ CREATE TABLE `loginformation`  (
 INSERT INTO `loginformation` VALUES ('2020-03-01 00:00:00', '小明入住');
 INSERT INTO `loginformation` VALUES ('2020-03-03 00:00:00', '小明退房');
 INSERT INTO `loginformation` VALUES ('2020-07-14 00:00:00', 'vip用户信息修改');
+INSERT INTO `loginformation` VALUES ('2020-07-15 00:00:00', '房间类别关键词获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:14:06', '关键词查询商品类型信息');
 
 -- ----------------------------
 -- Table structure for payinformation
@@ -165,7 +167,7 @@ CREATE TABLE `roominformation`  (
   `roomnum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `roomtypenum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `isempty` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `roomfoolr` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `roomfloor` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`roomnum`) USING BTREE,
   INDEX `roomtypenum`(`roomtypenum`) USING BTREE,
   CONSTRAINT `roominformation_ibfk_1` FOREIGN KEY (`roomtypenum`) REFERENCES `roomtypeinformation` (`roomtypenum`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -174,8 +176,8 @@ CREATE TABLE `roominformation`  (
 -- ----------------------------
 -- Records of roominformation
 -- ----------------------------
-INSERT INTO `roominformation` VALUES ('0101', '1', '0', '1');
-INSERT INTO `roominformation` VALUES ('0201', '2', '1', '2');
+INSERT INTO `roominformation` VALUES ('0101', 'a', '0', '01');
+INSERT INTO `roominformation` VALUES ('0201', 'b', '1', '02');
 
 -- ----------------------------
 -- Table structure for roomtypeinformation
@@ -193,8 +195,8 @@ CREATE TABLE `roomtypeinformation`  (
 -- ----------------------------
 -- Records of roomtypeinformation
 -- ----------------------------
-INSERT INTO `roomtypeinformation` VALUES ('1', '双人', '400', '20', '空间大');
-INSERT INTO `roomtypeinformation` VALUES ('2', '单人', '250', '20', '干净整洁');
+INSERT INTO `roomtypeinformation` VALUES ('a', '双人', '400', '20', '空间大');
+INSERT INTO `roomtypeinformation` VALUES ('b', '单人', '250', '20', '干净整洁');
 
 -- ----------------------------
 -- Table structure for tenantinformation
@@ -226,7 +228,7 @@ CREATE TABLE `vipinformation`  (
   `vipname` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vipsex` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `vipemail` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `registertime` date NULL DEFAULT NULL,
+  `registertime` timestamp(0) NULL DEFAULT NULL,
   `vipphone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`vipnum`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -234,7 +236,7 @@ CREATE TABLE `vipinformation`  (
 -- ----------------------------
 -- Records of vipinformation
 -- ----------------------------
-INSERT INTO `vipinformation` VALUES ('1', '10004', '张三', '女', 'zhang@gmal.com', '2020-07-14', '520888');
-INSERT INTO `vipinformation` VALUES ('2', '20004', '小丽', '女', 'xiaoli@hotel.com', '2020-04-05', '987654321');
+INSERT INTO `vipinformation` VALUES ('1', '10004', '张三', '女', 'zhang@gmal.com', '2020-07-14 00:00:00', '520888');
+INSERT INTO `vipinformation` VALUES ('2', '20004', '小丽', '女', 'xiaoli@hotel.com', '2020-04-05 00:00:00', '987654321');
 
 SET FOREIGN_KEY_CHECKS = 1;
