@@ -180,7 +180,21 @@ def KeyGetRoomType():
             "status": True
         })
     else:
-        GetRoomType()
+        sql = "select * from roomtypeinformation"
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "roomtypenum": type[0], "roomtype": type[1],
+                         "roomprice": type[2], "roomquantity": type[3], "roomdescribe": type[4]})
+            list.append(item)
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "所有房间类型获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+        return jsonify({
+            "RoomType": list,
+            "status": True
+        })
 
 
 #楼层信息相关操作
@@ -299,7 +313,22 @@ def KeyGetFloor():
             "status": True
         })
     else:
-        GetFloor()
+        sql = "select * from floorinformation"
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "floornum": type[0], "floordescribe": type[1]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "所有楼层信息获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Floor": list,
+            "status": True
+        })
 
 #商品信息相关操作
 @app.route("/Goods/Add")
@@ -434,7 +463,23 @@ def KeyGetGoods():
             "status": True
         })
     else:
-        GetGoods()
+        sql = "select * from goodsinformation"
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "goodsnum": type[0], "goodsname": type[1],
+                         "goodstypenum": type[2], "goodsprice": type[3], "goodsquantity": type[4]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "所有商品信息获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Goods": list,
+            "status": True
+        })
 
 #商品类别相关操作
 @app.route("/GoodsType/Add")
@@ -557,7 +602,23 @@ def KeyGetGoodsType():
             "status": True
         })
     else:
-        GetGoodsType()
+        sql = "select * from goodstypeinformation"
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "goodstypenum": type[0], "goodstype": type[1],
+                         "typedescribe": type[2]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "所有商品类别获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "GoodsType": list,
+            "status": True
+        })
 
 #会员信息相关操作
 @app.route("/Vip/Add")
@@ -939,6 +1000,7 @@ def KeyGetRoom():
     keyword = request.args.get("keyword")
 
     if keyword:
+        print("hello")
 #        sql = """SELECT roomnum,roominformation.roomtypenum,isempty,roomfloor
 #                 from roomtypeinformation,roominformation
 #                 where roomtypeinformation.roomtypenum=roominformation.roomtypenum
@@ -964,7 +1026,23 @@ def KeyGetRoom():
             "status": True
         })
     else:
-        GetRoom()
+        sql = "select * from roominformation"
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "roomnum": type[0], "roomtypenum": type[1],
+                         "isempty": type[2], "roomfloor": type[3]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "所有客房信息获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Room": list,
+            "status": True
+        })
 
 #消费信息相关操作
 @app.route("/Bill/Add")
@@ -1131,7 +1209,23 @@ def KeyGetBill():
             "status": True
         })
     else:
-        GetBill()
+        sql = "select * from billinformation"
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "goodsnum": type[0], "idcard": type[1],
+                         "quantity": type[2], "summoney": type[3]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "所有账单信息获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Room": list,
+            "status": True
+        })
 
 #获得所有可预定的房间
 @app.route("/Tenant/Get")
