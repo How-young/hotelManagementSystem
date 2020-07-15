@@ -34,7 +34,7 @@ def AdministratorLogin():
         sql = "select * from administratorinformation where adminnum='%s'"%adminnum
         res = ConnectMysql(sql)
         if res[1] == adminpassword:
-            td = strftime("%Y-%m-%d", localtime())
+            td = strftime("%Y-%m-%d %H:%M:%S", localtime())
             sss = "管理员登录"
             sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
             ConnectMysql(sqlr)
@@ -59,7 +59,7 @@ def GetRoomType():
         item = dict({"index": num, "roomtypenum": type[0], "roomtype": type[1],
                      "roomprice": type[2], "roomquantity": type[3], "roomdescribe": type[4]})
         list.append(item)
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有房间类型获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -84,7 +84,7 @@ def AddRoomType():
                  values('%s', '%s', '%s', '%s', '%s')
               """%(roomtypenum, roomtype, roomprice, roomquantity, roomdescribe)
         ConnectMysql(sql)
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "房间类型增加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -115,7 +115,7 @@ def ModifyRommType():
                  where roomtypenum='%s'
               """%(roomtype, roomprice, roomquantity, roomdescribe, roomtypenum)
         ConnectMysql(sql)
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "房间类型被修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -141,7 +141,7 @@ def DeleteRoomType():
         ConnectMysql(sql1)
         sql2 = "delete from roomtypeinformation where roomtypenum='%s'" %roomtypenum
         ConnectMysql(sql2)
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "房间类型被删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -151,6 +151,37 @@ def DeleteRoomType():
         })
     else:
         return Error()
+
+
+#关键词查询房间类型
+@app.route("/RoomType/KeyGet")
+def KeyGetRoomType():
+    keyword = request.args.get("keyword")
+
+    if keyword:
+        sql = """select * from roomtypeinformation
+                 where roomtypenum='%s' or roomtype='%s' or roomdescribe='%s'
+              """%(keyword, keyword, keyword)
+
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "roomtypenum": type[0], "roomtype": type[1],
+                         "roomprice": type[2], "roomquantity": type[3], "roomdescribe": type[4]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "房间类别关键词获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "RoomType": list,
+            "status": True
+        })
+    else:
+        GetRoomType()
+
 
 #楼层信息相关操作
 @app.route("/Floor/Add")
@@ -165,7 +196,7 @@ def AddFloor():
                  values('%s', '%s')
               """%(floornum, floordescribe)
         ConnectMysql(sql)
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "楼层信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -190,7 +221,7 @@ def ModifyFloor():
                       """ % (floordescribe, floornum)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "楼层信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -211,7 +242,7 @@ def DeleteFloor():
         sql = "delete from floorinformation where floornum='%s'" % floornum
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "楼层信息被删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -232,7 +263,7 @@ def GetFloor():
         item = dict({"index": num, "floornum": type[0], "floordescribe": type[1]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有楼层信息获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -242,6 +273,34 @@ def GetFloor():
         "status": True
     })
 
+#楼层信息关键词查询
+@app.route("/Floor/KeyGet")
+def KeyGetFloor():
+    keyword = request.args.get("keyword")
+
+    if keyword:
+        sql = """select * from floorinformation
+                 where floornum='%s' or floordescribe='%s'
+              """%(keyword, keyword)
+
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "floornum": type[0], "floordescribe": type[1]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "楼层信息关键词获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Floor": list,
+            "status": True
+        })
+    else:
+        GetFloor()
+
 #商品信息相关操作
 @app.route("/Goods/Add")
 def AddGoods():
@@ -249,16 +308,16 @@ def AddGoods():
     goodsname = request.args.get("goodsname")
     goodstypenum = request.args.get("goodstypenum")
     goodsprice = request.args.get("goodsprice")
-    goodsquantify = request.args.get("goodsquantify")
+    goodsquantity = request.args.get("goodsquantity")
 
     if goodsnum:
         sql = """insert into
-                 goodsinformation(goodsnum, goodsname, goodstypenum, goodsprice, goodsquantify)
+                 goodsinformation(goodsnum, goodsname, goodstypenum, goodsprice, goodsquantity)
                  values('%s', '%s', '%s', '%s', '%s')
-              """%(goodsnum, goodsname, goodstypenum, goodsprice, goodsquantify)
+              """%(goodsnum, goodsname, goodstypenum, goodsprice, goodsquantity)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "商品信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -268,7 +327,7 @@ def AddGoods():
             "goodsname": goodsname,
             "goodstypenum": goodstypenum,
             "goodsprice": goodsprice,
-            "goodsquantify": goodsquantify,
+            "goodsquantity": goodsquantity,
             "status": True
         })
     else:
@@ -280,16 +339,16 @@ def ModifyGoods():
     goodsname = request.args.get("goodsname")
     goodstypenum = request.args.get("goodstypenum")
     goodsprice = request.args.get("goodsprice")
-    goodsquantify = request.args.get("goodsquantify")
+    goodsquantity = request.args.get("goodsquantity")
 
     if goodsnum:
         sql = """update goodsinformation
-                         set goodsname='%s',goodstypenum='%s',goodsprice='%s',goodsquantify='%s'
+                         set goodsname='%s',goodstypenum='%s',goodsprice='%s',goodsquantity='%s'
                          where goodsnum='%s'
-              """ % (goodsname, goodstypenum, goodsprice, goodsquantify, goodsnum)
+              """ % (goodsname, goodstypenum, goodsprice, goodsquantity, goodsnum)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "商品信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -298,8 +357,8 @@ def ModifyGoods():
             "goodsnum": goodsname,
             "goodsname": goodstypenum,
             "goodstypenum": goodsprice,
-            "goodsprice": goodsquantify,
-            "goodsquantify": goodsnum,
+            "goodsprice": goodsquantity,
+            "goodsquantity": goodsnum,
             "status": True
         })
     else:
@@ -313,7 +372,7 @@ def DelteGoods():
         sql = "delete from goodsinformation where goodsnum='%s'" % goodsnum
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "商品信息删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -332,10 +391,10 @@ def GetGoods():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "goodsnum": type[0], "goodsname": type[1],
-                     "goodstypenum": type[2], "goodsprice": type[3], "goodsquantify": type[4]})
+                     "goodstypenum": type[2], "goodsprice": type[3], "goodsquantity": type[4]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有商品信息获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -344,6 +403,38 @@ def GetGoods():
         "Goods": list,
         "status": True
     })
+
+#关键词查询商品信息
+@app.route("/Goods/KeyGet")
+def KeyGetGoods():
+    keyword = request.args.get("keyword")
+
+    if keyword:
+#        sql = """SELECT goodsnum,goodsname,goodsinformation.goodstypenum,goodsprice,goodsquantity
+#                 FROM goodsinformation,goodstypeinformation
+#                 WHERE goodsinformation.goodstypenum=goodstypeinformation.goodstypenum
+#                 AND (goodstype='%s' or goodsnum='%s' or goodsname='%s' or goodsinformation.goodstypenum='%s')
+#              """%(keyword, keyword, keyword, keyword)
+        sql1 = "select * from goodsinformation where goodsnum='%s' or goodsname='%s' or goodstypenum='%s'"%(keyword,keyword,keyword)
+        res = ConnectMysql(sql1)
+        print(res)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "goodsnum": type[0], "goodsname": type[1],
+                         "goodstypenum": type[2], "goodsprice": type[3], "goodsquantity": type[4]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "关键词查询商品信息"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "GoodsType": list,
+            "status": True
+        })
+    else:
+        GetGoods()
 
 #商品类别相关操作
 @app.route("/GoodsType/Add")
@@ -359,7 +450,7 @@ def AddGoodsType():
               """%(goodstypenum, goodstype, typedescribe)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "商品类别信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -386,7 +477,7 @@ def ModifyGoodsType():
               """ % (goodstype, typedescribe, goodstypenum)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "商品类别信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -408,7 +499,7 @@ def DeleteGoodsType():
         sql = "delete from goodstypeinformation where goodstypenum='%s'" % goodstypenum
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "商品类别信息删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -430,7 +521,7 @@ def GetGoodsType():
                      "typedescribe": type[2]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有商品类别获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -439,6 +530,34 @@ def GetGoodsType():
         "GoodsType": list,
         "status": True
     })
+
+#商品类型信息的关键词查询
+@app.route("/GoodsType/KeyGet")
+def KeyGetGoodsType():
+    keyword = request.args.get("keyword")
+
+    if keyword:
+        sql = """select * from goodstypeinformation
+                 where goodstypenum='%s' or goodstype='%s' or typedescribe='%s'
+              """%(keyword, keyword, keyword)
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "goodstypenum": type[0], "goodstype": type[1],
+                         "typedescribe": type[2]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "关键词查询商品类型信息"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "GoodsType": list,
+            "status": True
+        })
+    else:
+        GetGoodsType()
 
 #会员信息相关操作
 @app.route("/Vip/Add")
@@ -451,14 +570,14 @@ def AddVip():
     vipphone = request.args.get("vipphone")
 
     if vipnum:
-        registertime = strftime("%Y-%m-%d", localtime())
+        registertime = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sql = """insert into
                  vipinformation(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
                  values('%s', '%s', '%s', '%s', '%s', '%s', '%s')
               """%(vipnum, idcard, vipname, vipsex,vipemail,registertime,vipphone)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "vip用户添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -483,7 +602,7 @@ def ModifyVip():
     vipname = request.args.get("vipname")
     vipsex = request.args.get("vipsex")
     vipemail = request.args.get("vipemail")
-    registertime = strftime("%Y-%m-%d", localtime())
+    registertime = strftime("%Y-%m-%d %H:%M:%S", localtime())
     vipphone = request.args.get("vipphone")
 
     if vipnum:
@@ -493,7 +612,7 @@ def ModifyVip():
               """ % (idcard, vipname, vipsex, vipemail, registertime, vipphone, vipnum)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "vip用户信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -519,7 +638,7 @@ def DelteVip():
         sql = "delete from vipinformation where vipnum='%s'" % vipnum
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "vip用户信息删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -542,7 +661,7 @@ def GetVip():
                      "registertime": type[5], "vipphone": type[6]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "vip用户所有信息获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -567,7 +686,7 @@ def NumGetVip():
                      "registertime": type[5], "vipphone": type[6]})
             list.append(item)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "会员号查询会员信息"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -595,7 +714,7 @@ def AddEmployee():
               """%(employeenum, employeemail, employeepassword, employeename, employeesex)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "员工信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -626,7 +745,7 @@ def ModifyEmployee():
               """ % (employeemail, employeepassword, employeename, employeesex, employeenum)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "员工信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -650,7 +769,7 @@ def DelteEmployee():
         sql = "delete from employeeinfromation where employeenum='%s'" % employeenum
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "员工信息删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -672,7 +791,7 @@ def GetEmployee():
                      "employeepassword": type[2], "employeename": type[3], "employeesex": type[4]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有员工信息获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -702,7 +821,7 @@ def NumGetEmployee():
                      "employeepassword": type[2], "employeename": type[3], "employeesex": type[4]})
             list.append(item)
         
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "员工编号或姓名查找员工信息"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -730,7 +849,7 @@ def AddRoom():
               """%(roomnum, roomtypenum, isempty, roomfloor)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "客房信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -759,7 +878,7 @@ def ModifyRoom():
               """ % (roomtypenum, isempty, roomfloor, roomnum)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "客房信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -782,7 +901,7 @@ def DelteRoom():
         sql = "delete from roominformation where roomnum='%s'" % roomnum
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "客房信息删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -804,7 +923,7 @@ def GetRoom():
                      "isempty": type[2], "roomfloor": type[3]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有客房信息获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -813,6 +932,39 @@ def GetRoom():
         "Room": list,
         "status": True
     })
+
+#关键词查询房间信息
+@app.route("/Room/KeyGet")
+def KeyGetRoom():
+    keyword = request.args.get("keyword")
+
+    if keyword:
+#        sql = """SELECT roomnum,roominformation.roomtypenum,isempty,roomfloor
+#                 from roomtypeinformation,roominformation
+#                 where roomtypeinformation.roomtypenum=roominformation.roomtypenum
+#                 and (roomtype='%s' or roomnum='%s' or roominformation.roomtypenum='%s' or isempty='%s' or roomfloor='%s')
+#                  """ % (keyword, keyword, keyword,keyword,keyword)
+        sql1 = """select * from roominformation 
+                  where roomnum='%s' or roomtypenum='%s' or isempty='%s' or roomfloor='%s'
+               """%(keyword,keyword,keyword,keyword)
+        res = ConnectMysql(sql1)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "roomnum": type[0], "roomtypenum": type[1],
+                         "isempty": type[2], "roomfloor": type[3]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "客房信息关键词获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Room": list,
+            "status": True
+        })
+    else:
+        GetRoom()
 
 #消费信息相关操作
 @app.route("/Bill/Add")
@@ -834,7 +986,7 @@ def AddBill():
             ConnectMysql(sql6)
 
         summoney = res[1] * quantity
-        today = strftime("%Y-%m-%d", localtime())
+        today = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sql2 = """insert into
                  billinformation(goodsnum, idcard, quantity,summoney)
                  values('%s', '%s', '%s', '%s')
@@ -845,10 +997,12 @@ def AddBill():
 
         sql7 = "select sum(summoney) from billinformation where idcard='%s'"%idcard
         res7 = ConnectMysql(sql7)
-        sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'"%(today, res7[0], idcard)
+        sql8 = "select total from payinformation where idcard='%s'"%idcard
+        res8=ConnectMysql(sql8)
+        sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'"%(today, res8[0]+res7[0], idcard)
         ConnectMysql(sql4)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "账单信息添加"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -882,7 +1036,7 @@ def ModifyBill():
             ConnectMysql(sql6)
 
         summoney = res[1] * quantity
-        today = strftime("%Y-%m-%d", localtime())
+        today = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sql2 = """update billinformation
                          set summoney='%s',quantity='%s'
                          where goodsnum='%s',idcard='%s'
@@ -896,7 +1050,7 @@ def ModifyBill():
         sql4 = "update payinformation set paytime='%s',total='%s' where idcard='%s'" % (today, res7[0], idcard)
         ConnectMysql(sql4)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "账单信息修改"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
         ConnectMysql(sqlr)
@@ -912,20 +1066,22 @@ def ModifyBill():
         return Error()
 
 @app.route("/Bill/Delete")
-def Deltebill():
+def DeleteBill():
     goodsnum = request.args.get("goodsnum")
+    idcard = request.args.get("idcard")
 
     if goodsnum:
-        sql = "delete from billinformation where goodsnum='%s'" % goodsnum
+        sql = "delete from billinformation where goodsnum='%s' and idcard='%s'" % (goodsnum, idcard)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "账单信息删除"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
 
         return jsonify({
             "goodsnum": goodsnum,
+            "idcard": idcard,
             "status": True
         })
     else:
@@ -933,7 +1089,7 @@ def Deltebill():
 
 #所有账单获取
 @app.route("/Bill/Get")
-def Getbill():
+def GetBill():
     sql = "select * from billinformation"
     res = ConnectMysql(sql)
     list = []
@@ -942,7 +1098,7 @@ def Getbill():
                      "quantity": type[2], "summoney": type[3]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "所有账单信息获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -952,6 +1108,30 @@ def Getbill():
         "status": True
     })
 
+#关键词获取账单
+@app.route("/Bill/KeyGet")
+def KeyGetBill():
+    keyword = request.args.get("keyword")
+    if keyword:
+        sql = "select * from billinformation where goodsnum ='%s' or idcard = '%s'"%(keyword,keyword)
+        res = ConnectMysql(sql)
+        list = []
+        for num, type in enumerate(res):
+            item = dict({"index": num, "goodsnum": type[0], "idcard": type[1],
+                         "quantity": type[2], "summoney": type[3]})
+            list.append(item)
+
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
+        sss = "账单信息关键词获取"
+        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
+        ConnectMysql(sqlr)
+
+        return jsonify({
+            "Room": list,
+            "status": True
+        })
+    else:
+        GetBill()
 
 #获得所有可预定的房间
 @app.route("/Tenant/Get")
@@ -968,7 +1148,7 @@ def GetTenant():
                      "roomquantity": type[3], "roomdescribe": type[4], "roomfloor": type[5]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "可预订房间获取"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -1013,7 +1193,7 @@ def BookTenant():
                        """ % stayroom
                 ConnectMysql(sql3)
 
-                td = strftime("%Y-%m-%d", localtime())
+                td = strftime("%Y-%m-%d %H:%M:%S", localtime())
                 sss = "预定房间"
                 sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
                 ConnectMysql(sqlr)
@@ -1048,7 +1228,7 @@ def GetBookTenant():
                      "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "获得已预定的所有房间"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -1075,7 +1255,7 @@ def ModifyTenant():
               """%(tenantname, tenantsex, checkin, checkout, idcard)
         ConnectMysql(sql)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "修改住房信息"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -1113,7 +1293,7 @@ def DeleteTenant():
             sql3 = "delete from tenantinformation where idcard='%s'"%idcard
             ConnectMysql(sql3)
 
-            td = strftime("%Y-%m-%d", localtime())
+            td = strftime("%Y-%m-%d %H:%M:%S", localtime())
             sss = "删除预定信息"
             sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
             ConnectMysql(sqlr)
@@ -1161,7 +1341,7 @@ def CheckinTenanet():
                        """ % stayroom
                 ConnectMysql(sql3)
 
-                td = strftime("%Y-%m-%d", localtime())
+                td = strftime("%Y-%m-%d %H:%M:%S", localtime())
                 sss = "今天登记入住"
                 sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
                 ConnectMysql(sqlr)
@@ -1191,10 +1371,10 @@ def GetAllTenant():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
-                     "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
+                     "checkin": type[3], "checkout": type[4]})
         list.append(item)
 
-    td = strftime("%Y-%m-%d", localtime())
+    td = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "获取所有的住客信息"
     sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
     ConnectMysql(sqlr)
@@ -1236,7 +1416,7 @@ def ChangeRoomTenant():
                       """%changeroom
                 ConnectMysql(sql5)
 
-                td = strftime("%Y-%m-%d", localtime())
+                td = strftime("%Y-%m-%d %H:%M:%S", localtime())
                 sss = "换房间"
                 sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
                 ConnectMysql(sqlr)
@@ -1275,13 +1455,13 @@ def PayTenant():
             elif res2[0][0] > 0:
                 money = res2[0][0]
                 total = day * money
-                today = strftime("%Y-%m-%d", localtime())
+                today = strftime("%Y-%m-%d %H:%M:%S", localtime())
                 sql3 = """insert into payinformation(idcard, paytime, total)
                           value('%s', '%s', '%s')
                        """%(idcard, today, total)
                 ConnectMysql(sql3)
 
-                td = strftime("%Y-%m-%d", localtime())
+                td = strftime("%Y-%m-%d %H:%M:%S", localtime())
                 sss = "房客账单付费"
                 sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
                 ConnectMysql(sqlr)
@@ -1300,6 +1480,40 @@ def PayTenant():
     else:
         return Error()
 
+@app.route("/Tenant/CheckinA")
+def CheckinATenant():
+    idcard = request.args.get("idcard")
+    checkin = strftime("%Y-%m-%d %H:%M:%S", localtime())
+    if idcard:
+        sql = """update tenantinformation 
+                 set checkin='%s'
+                 where idcard='%s'
+              """ % (checkin, idcard)
+        ConnectMysql(sql)
+        return jsonify({
+            "idcard": idcard,
+            "checkin": checkin,
+            "status": True
+        })
+    else:
+        return Error()
+
+@app.route("/Tenant/GetByid")
+def GetByidTenant():
+    idcard = request.args.get("idcard")
+    sql = "select * from tenantinformation where idcard='%s'"%idcard
+    res = ConnectMysql(sql)
+    list = []
+    for num, type in enumerate(res):
+        item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
+                     "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
+        list.append(item)
+    return jsonify({
+        "Tenant": list,
+        "status": True
+    })
+
+
 
 #一段时间的入住等报表
 @app.route("/Report/LongTime")
@@ -1317,7 +1531,7 @@ def LongTimeReport():
                          "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
             list.append(item)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "一段时间的入住等报表查询"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td,sss)
         ConnectMysql(sqlr)
@@ -1333,7 +1547,7 @@ def LongTimeReport():
 #当日入住和离开
 @app.route("/Report/Checkin")
 def CheckinReport():
-    totay = strftime("%Y-%m-%d", localtime())
+    totay = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sql1 = "select * from tenantinformation where checkin like '%%%s%%'"%totay
     res1 = ConnectMysql(sql1)
     if res1.__len__() > 0:
@@ -1343,7 +1557,7 @@ def CheckinReport():
                          "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
             list1.append(item)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "入住"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
         ConnectMysql(sqlr)
@@ -1358,7 +1572,7 @@ def CheckinReport():
 
 @app.route("/Report/Checkout")
 def CheckoutReport():
-    totay = strftime("%Y-%m-%d", localtime())
+    totay = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sql = "select * from tenantinformation where checkout like '%%%s%%'"%totay
     res = ConnectMysql(sql)
     if res.__len__() > 0:
@@ -1368,7 +1582,7 @@ def CheckoutReport():
                          "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
             list.append(item)
 
-        td = strftime("%Y-%m-%d", localtime())
+        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
         sss = "离开"
         sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
         ConnectMysql(sqlr)
@@ -1383,7 +1597,7 @@ def CheckoutReport():
 
 @app.route("/Report/Money")
 def MoneyReport():
-    totay = strftime("%Y-%m-%d", localtime())
+    totay = strftime("%Y-%m-%d %H:%M:%S", localtime())
     sss = "查询钱的报表"
     sql = "select * from payinformation where paytime like '%%%s%%'"%totay
     res = ConnectMysql(sql)
