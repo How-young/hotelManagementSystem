@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 #数据库操作
 def ConnectMysql(sql):
-    connect = pymysql.connect("localhost", "root", "fw2825", "hotel")
+    connect = pymysql.connect("localhost", "root", "root", "hotel")
     cur = connect.cursor()
     try:
         cur.execute(sql)
@@ -1045,7 +1045,7 @@ def GetBookTenant():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
-                     "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
+                     "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
         list.append(item)
 
     td = strftime("%Y-%m-%d", localtime())
@@ -1125,6 +1125,23 @@ def DeleteTenant():
     else:
         return Error()
 
+@app.route("/Tenant/CheckinA")
+def CheckinATenant():
+    idcard = request.args.get("idcard")
+    checkin = strftime("%Y-%m-%d %H:%M:%S", localtime())
+    if idcard:
+        sql = """update tenantinformation
+                 set checkin='%s'
+                 where idcard='%s'
+              """ % (checkin, idcard)
+        ConnectMysql(sql)
+        return jsonify({
+            "idcard": idcard,
+            "checkin": checkin,
+            "status": True
+        })
+    else:
+        return Error()
 
 #今天登记入住
 @app.route("/Tenant/Checkin")
@@ -1135,6 +1152,7 @@ def CheckinTenanet():
     tenantsex = request.args.get("tenantsex")
     checkin = strftime("%Y-%m-%d %H:%M:%S", localtime())
     checkout = request.args.get("checkout")
+    # checkout = strftime("%Y-%m-%d %H:%M:%S", checkout)
     print(checkin)
 
     if idcard and stayroom:
@@ -1191,7 +1209,7 @@ def GetAllTenant():
     list = []
     for num, type in enumerate(res):
         item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
-                     "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
+                     "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
         list.append(item)
 
     td = strftime("%Y-%m-%d", localtime())
@@ -1262,6 +1280,7 @@ def PayTenant():
         sql1 = "select datediff(checkout, checkin)+1 from tenantinformation where idcard='%s'"%idcard
         res1 = ConnectMysql(sql1)
         if res1.__len__() == 0:
+            print(1)
             return Error()
         elif res1[0][0] > 0:
             day = res1[0][0]
@@ -1271,6 +1290,7 @@ def PayTenant():
                    """%idcard
             res2 = ConnectMysql(sql2)
             if res2.__len__() == 0:
+                print(2)
                 return Error()
             elif res2[0][0] > 0:
                 money = res2[0][0]
@@ -1294,10 +1314,13 @@ def PayTenant():
                     "status": True
                 })
             else:
+                print(3)
                 return Error()
         else:
+            print(4)
             return Error()
     else:
+        print(5)
         return Error()
 
 
