@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 15/07/2020 16:16:34
+ Date: 16/07/2020 14:11:56
 */
 
 SET NAMES utf8mb4;
@@ -48,13 +48,15 @@ CREATE TABLE `billinformation`  (
 -- Records of billinformation
 -- ----------------------------
 INSERT INTO `billinformation` VALUES ('101', '12345', 2, 3);
+INSERT INTO `billinformation` VALUES ('101', '54321', 3, 9);
 INSERT INTO `billinformation` VALUES ('102', '12345', 3, 2);
+INSERT INTO `billinformation` VALUES ('102', '54321', 8, 40);
 
 -- ----------------------------
--- Table structure for employeeinfromation
+-- Table structure for employeeinformation
 -- ----------------------------
-DROP TABLE IF EXISTS `employeeinfromation`;
-CREATE TABLE `employeeinfromation`  (
+DROP TABLE IF EXISTS `employeeinformation`;
+CREATE TABLE `employeeinformation`  (
   `employeenum` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `employeemail` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `employeepassword` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -64,10 +66,10 @@ CREATE TABLE `employeeinfromation`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of employeeinfromation
+-- Records of employeeinformation
 -- ----------------------------
-INSERT INTO `employeeinfromation` VALUES ('1', '12345@gmail.com', '12345', '李军', '男');
-INSERT INTO `employeeinfromation` VALUES ('2', '543212@qq.com', '54321', '张琪', '女');
+INSERT INTO `employeeinformation` VALUES ('1', '12345@gmail.com', '12345', '李军', '男');
+INSERT INTO `employeeinformation` VALUES ('2', '543212@qq.com', '54321', '张琪', '女');
 
 -- ----------------------------
 -- Table structure for floorinformation
@@ -103,9 +105,9 @@ CREATE TABLE `goodsinformation`  (
 -- ----------------------------
 -- Records of goodsinformation
 -- ----------------------------
-INSERT INTO `goodsinformation` VALUES ('101', '可乐', '1', 3, 10);
-INSERT INTO `goodsinformation` VALUES ('102', '橙汁', '1', 5, 10);
-INSERT INTO `goodsinformation` VALUES ('201', '吐司', '2', 7, 5);
+INSERT INTO `goodsinformation` VALUES ('101', '可乐', '1', 3, 50);
+INSERT INTO `goodsinformation` VALUES ('102', '橙汁', '1', 5, 50);
+INSERT INTO `goodsinformation` VALUES ('201', '吐司', '2', 7, 50);
 
 -- ----------------------------
 -- Table structure for goodstypeinformation
@@ -129,7 +131,7 @@ INSERT INTO `goodstypeinformation` VALUES ('2', '面包', '充饥');
 -- ----------------------------
 DROP TABLE IF EXISTS `loginformation`;
 CREATE TABLE `loginformation`  (
-  `logdate` timestamp(0) NOT NULL,
+  `logdate` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `detail` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`logdate`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -142,6 +144,25 @@ INSERT INTO `loginformation` VALUES ('2020-03-03 00:00:00', '小明退房');
 INSERT INTO `loginformation` VALUES ('2020-07-14 00:00:00', 'vip用户信息修改');
 INSERT INTO `loginformation` VALUES ('2020-07-15 00:00:00', '房间类别关键词获取');
 INSERT INTO `loginformation` VALUES ('2020-07-15 16:14:06', '关键词查询商品类型信息');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:34:01', '所有商品类别获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:34:55', '关键词查询商品类型信息');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:37:46', '客房信息关键词获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:37:53', '所有客房信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:38:23', '所有客房信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:39:00', '所有客房信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:45:01', '所有客房信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:48:13', '所有房间类型获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:48:21', '所有房间类型获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:48:37', '所有楼层信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:48:59', '所有商品信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:49:16', '所有商品类别获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:49:33', '所有客房信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 16:49:46', '所有账单信息获取');
+INSERT INTO `loginformation` VALUES ('2020-07-15 20:08:07', '关键词查询商品信息');
+INSERT INTO `loginformation` VALUES ('2020-07-15 21:02:06', '账单信息添加');
+INSERT INTO `loginformation` VALUES ('2020-07-15 21:09:52', '账单信息添加');
+INSERT INTO `loginformation` VALUES ('2020-07-15 23:48:24', '账单信息添加');
+INSERT INTO `loginformation` VALUES ('2020-07-15 23:54:55', '账单信息添加');
 
 -- ----------------------------
 -- Table structure for payinformation
@@ -158,6 +179,7 @@ CREATE TABLE `payinformation`  (
 -- Records of payinformation
 -- ----------------------------
 INSERT INTO `payinformation` VALUES ('12345', NULL, NULL);
+INSERT INTO `payinformation` VALUES ('54321', '2020-07-15 23:54:55', 78);
 
 -- ----------------------------
 -- Table structure for roominformation
@@ -176,8 +198,12 @@ CREATE TABLE `roominformation`  (
 -- ----------------------------
 -- Records of roominformation
 -- ----------------------------
-INSERT INTO `roominformation` VALUES ('0101', 'a', '0', '01');
-INSERT INTO `roominformation` VALUES ('0201', 'b', '1', '02');
+INSERT INTO `roominformation` VALUES ('101', 'a', '0', '01');
+INSERT INTO `roominformation` VALUES ('102', 'a', '1', '01');
+INSERT INTO `roominformation` VALUES ('103', 'b', '1', '01');
+INSERT INTO `roominformation` VALUES ('201', 'b', '0', '02');
+INSERT INTO `roominformation` VALUES ('202', 'a', '1', '02');
+INSERT INTO `roominformation` VALUES ('203', 'b', '1', '02');
 
 -- ----------------------------
 -- Table structure for roomtypeinformation
@@ -195,8 +221,8 @@ CREATE TABLE `roomtypeinformation`  (
 -- ----------------------------
 -- Records of roomtypeinformation
 -- ----------------------------
-INSERT INTO `roomtypeinformation` VALUES ('a', '双人', '400', '20', '空间大');
-INSERT INTO `roomtypeinformation` VALUES ('b', '单人', '250', '20', '干净整洁');
+INSERT INTO `roomtypeinformation` VALUES ('a', '双人', '400', '2', '空间大');
+INSERT INTO `roomtypeinformation` VALUES ('b', '单人', '250', '2', '干净整洁');
 
 -- ----------------------------
 -- Table structure for tenantinformation
