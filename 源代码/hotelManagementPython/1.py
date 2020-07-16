@@ -1672,8 +1672,8 @@ def LongTimeReport():
 #当日入住和离开
 @app.route("/Report/Checkin")
 def CheckinReport():
-    totay = strftime("%Y-%m-%d %H:%M:%S", localtime())
-    sql1 = "select * from tenantinformation where checkin like '%%%s%%'"%totay
+    today = strftime("%Y-%m-%d", localtime())
+    sql1 = "select * from tenantinformation where checkin like '%%%s%%'"%today
     res1 = ConnectMysql(sql1)
     if res1.__len__() > 0:
         list1 = []
@@ -1681,12 +1681,6 @@ def CheckinReport():
             item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
                          "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
             list1.append(item)
-
-        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
-        sss = "入住"
-        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
-        ConnectMysql(sqlr)
-
         return jsonify({
             "checkin": list1,
             "status": True
@@ -1697,27 +1691,22 @@ def CheckinReport():
 
 @app.route("/Report/Checkout")
 def CheckoutReport():
-    totay = strftime("%Y-%m-%d %H:%M:%S", localtime())
+    totay = strftime("%Y-%m-%d", localtime())
     sql = "select * from tenantinformation where checkout like '%%%s%%'"%totay
     res = ConnectMysql(sql)
     if res.__len__() > 0:
         list = []
         for num, type in enumerate(res):
             item = dict({"index": num, "idcard": type[0], "stayroom": type[1], "tenantname": type[2],
-                         "tenantname": type[3], "checkin": type[4], "checkout": type[5]})
+                         "tenantsex": type[3], "checkin": type[4], "checkout": type[5]})
             list.append(item)
-
-        td = strftime("%Y-%m-%d %H:%M:%S", localtime())
-        sss = "离开"
-        sqlr = "insert into loginformation(logdate,detail) value('%s','%s')" % (td, sss)
-        ConnectMysql(sqlr)
-
         return jsonify({
             "checkout": list,
             "status": True
         })
     else:
         return Error()
+
 
 
 @app.route("/Report/Money")
